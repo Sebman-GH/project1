@@ -10,8 +10,8 @@ client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 def main_menu(*fst_start):
     try:
         if fst_start[0] == True:
-            SERVER = '192.168.56.1'
-            #SERVER = input("Input the server IP you would like to connect:")
+            #SERVER = '192.168.56.1'
+            SERVER = input("Input the server IP you would like to connect:")
             ADDR = (SERVER,PORT)
             print("Connecting...")
             try:
@@ -57,14 +57,14 @@ def send_file():
     if filename == "/disconnect": send_message("/disconnect")
     if filename == "/return": main_menu()
     try:
+        client.send(b"2")
         with open(filename,'rb') as file:
             data = file.read()
-            filename = filename.encode(FORMAT)
-            client.send(b"2")
             client.send(lenth_sending(filename))
-            client.send(filename)
+            client.send(filename.encode('utf-8'))
             client.send(lenth_sending(data))
-            client.sendall(data)
+            for i in range(0,len(data),4):
+                client.send((data[i : i + 4]))
             if input("Open file after sending? (y/n)\n") == 'y': client.send(b'y')
             else: client.send(b'n')
             print("File sent")

@@ -4,8 +4,8 @@ import os
 
 BUFFER = 16
 PORT = 6067
-#SERVER = socket.gethostbyname(socket.gethostname())
-SERVER = "192.168.0.105"
+SERVER = socket.gethostbyname(socket.gethostname())
+#SERVER = "192.168.0.105"
 ADDR = (SERVER,PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "/disconnect"

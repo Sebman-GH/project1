@@ -2,7 +2,7 @@ import socket
 import os
 from time import sleep
 
-HEADER = 16
+BUFFER = 32
 PORT = 6067
 FORMAT = 'utf-8'
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -63,8 +63,8 @@ def send_file():
             client.send(lenth_sending(filename))
             client.send(filename.encode('utf-8'))
             client.send(lenth_sending(data))
-            for i in range(0,len(data),4):
-                client.send((data[i : i + 4]))
+            for i in range(0,len(data),16):
+                client.send((data[i : i + 16]))
             if input("Open file after sending? (y/n)\n") == 'y': client.send(b'y')
             else: client.send(b'n')
             print("File sent")
@@ -75,7 +75,7 @@ def send_file():
 
 def lenth_sending(string):
         string_lenth = str(len(string)).encode(FORMAT)
-        string_lenth += b' ' * (HEADER - len(string_lenth))
+        string_lenth += b' ' * (BUFFER - len(string_lenth))
         return string_lenth
 
 def cmd_input():

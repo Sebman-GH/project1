@@ -2,10 +2,10 @@ import socket
 import threading
 import os
 
-BUFFER = 16
+BUFFER = 32
 PORT = 6067
-SERVER = socket.gethostbyname(socket.gethostname())
-#SERVER = "192.168.0.105"
+#SERVER = socket.gethostbyname(socket.gethostname())
+SERVER = "192.168.0.105"
 ADDR = (SERVER,PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "/disconnect"
@@ -42,13 +42,13 @@ def file_recv(conn,addr):
         file_lenth = int(conn.recv(BUFFER))
         with open(filename, 'wb+') as file:
             data_count = 0
-            file_data = conn.recv(4)
+            file_data = conn.recv(16)
             file.write(file_data)
-            data_count += 4
+            data_count += 16
             while data_count < file_lenth:
-                file_data = conn.recv(4)
+                file_data = conn.recv(16)
                 file.write(file_data)
-                data_count +=4
+                data_count += 16
         file.close
         print(f"New file {filename} from {addr} received!")
         if conn.recv(1) == b'y':
